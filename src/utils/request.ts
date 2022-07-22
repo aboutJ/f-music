@@ -5,7 +5,7 @@ const instance: Axios = axios.create({
   timeout: 5000
 })
 
-export default function request(url: string, method: string, params: object) {
+export default function request(url: string, method: string, params: any) {
   method = method.trim().toUpperCase()
   if(method == 'GET') {
     return instance.get(url, {params})

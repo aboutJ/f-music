@@ -1,15 +1,15 @@
 <template>
-  <div class="sl-wrapper" ref="selecter">
+  <div class="sl-wrapper" v-for="item in data" ref="selecter">
     <div class="sl-main">
-      <span>风格</span>
+      <span>{{item.name}}</span>
       <i class="arrow iconfont icon-caret-down"></i>
       <div class="select-dialog">
         <div class="sd-arrow" ref="sdArrow"></div>
         <div class="main">
-          <SelectBtn @selectClick=""/>
+          <SelectBtn :content="item.children"/>
         </div>
         <div class="bottom">
-          <div class="btn">确定</div>
+          <div :class="[{'canclick': canClick},'btn']" @click="search">确定</div>
         </div>
       </div>
     </div>
@@ -17,19 +17,31 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import SelectBtn from '../SelectBtn/index.vue'
+import { useMusicStore } from '../../store'
 
+defineProps(["data"])
 
 const selecter = ref<HTMLDivElement | null>(null)
 const sdArrow = ref<HTMLDivElement | null>(null)
+let canClick = ref<boolean>(false)
 
-onMounted(() => {
-  // 让sd-arrow 的left为 sl-wrapper 的一半
-  const s_width: number | undefined = selecter.value?.clientWidth
-  sdArrow.value!.style.left = s_width as number / 2 + "px"
+const musicStore = useMusicStore()
+
+musicStore.$subscribe((mutation, state) => {
+  if(state.categoryList.length > 0) {
+    canClick.value = true
+  }else {
+    canClick.value = false
+  }
 })
 
+function search() {
+  if(!canClick.value) return
+  // 搜索
+  console.log('search');
+}
 </script>
 
 <style lang="less" scoped>
@@ -40,6 +52,7 @@ onMounted(() => {
   background-color: #fff;
   height: 42px;
   user-select: none;
+  margin-right: 15px;
 
   .sl-main {
     display: flex;
@@ -77,6 +90,7 @@ onMounted(() => {
       .sd-arrow {
         position: absolute;
         top: -4px;
+        left: 42.5px;
         width: 10px;
         height: 10px;
         background-color: #fff;
@@ -89,6 +103,7 @@ onMounted(() => {
         padding: 0 13px;
         height: 260px;
         box-sizing: border-box;
+        overflow: auto;
       }
 
       .bottom {
@@ -105,6 +120,12 @@ onMounted(() => {
           background-color: #A9AAAA;
           color: #fff;
           border-radius: 15px;
+          cursor: pointer;
+        }
+
+        .canclick {
+          background-color: #333;
+          color: #fff;
         }
       }
     }

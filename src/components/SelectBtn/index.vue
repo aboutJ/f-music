@@ -1,33 +1,40 @@
 <template>
-  <div class="s-wrapper">
-    <div class="s-btn" ref="sbtn">
+  <div class="s-wrapper" v-for="item in content">
+    <div :class="[{'isactive': getCheckedStatus(item)},'s-btn']" @click.prevent="current(item)">
       <input
         type="checkbox"
         id="inputId"
-        :checked="isBoxChecked"
-        @click="selectBox"
+        :checked="getCheckedStatus(item)"
       />
       <label for="inputId"></label>
-      <span class="text"> zhoujilun</span>
+      <span class="text">{{item.name}}</span>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue"
+import { MusicCategory } from '../../interface/info'
+import { useMusicStore } from '../../store/Music'
+import { Ref, ref } from 'vue'
 
-const sbtn = ref<HTMLDivElement | null>(null)
-let isBoxChecked = ref<boolean>(false)
+defineProps(["content"])
+const musicStore = useMusicStore()
+const checkedList: Ref<MusicCategory[]> = ref([])
 
-function selectBox(): void {
-  isBoxChecked.value = !isBoxChecked.value
-  if (isBoxChecked.value) {
-    sbtn.value!.style.backgroundColor = "#333333"
-    sbtn.value!.style.color = "#fff"
-  } else {
-    sbtn.value!.style.backgroundColor = "#fff"
-    sbtn.value!.style.color = "#636569"
+// 状态是否被选中
+function getCheckedStatus(item: MusicCategory): boolean {
+  return checkedList.value.findIndex((ele) => ele == item) != -1
+}
+
+function current(item: MusicCategory) {
+  const result = checkedList.value.findIndex((ele) => item == ele)
+  if(result != -1) {
+    checkedList.value.splice(result, 1)
+    musicStore.categoryList.splice(result, 1)
+    return
   }
+  checkedList.value.push(item)
+  musicStore.categoryList.push(item)
 }
 </script>
 
@@ -35,6 +42,7 @@ function selectBox(): void {
 .s-wrapper {
   display: inline-block;
   min-width: 160px;
+  cursor: pointer;
 }
 .s-btn {
   display: flex;
@@ -44,10 +52,15 @@ function selectBox(): void {
   border-radius: 3px;
   border: 1px solid #636569;
   color: #636569;
+  margin-right: 8px;
 
   .text {
     margin-left: 5px;
   }
+}
+
+.s-btn:nth-child(3n) {
+  margin: 0;
 }
 
 input {
@@ -61,7 +74,6 @@ label {
   border-radius: 5px;
   border: 1px solid #444445;
   position: relative;
-  cursor: pointer;
 }
 
 .s-btn:hover {
@@ -100,5 +112,10 @@ input:checked + label::before {
 input:checked + label {
   transform: scale(1.1);
   transition: all 0.3s;
+}
+
+.isactive {
+  background-color: #333333;
+  color: #fff;
 }
 </style>

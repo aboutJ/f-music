@@ -3,3 +3,10 @@ export interface LoginInfo {
   password: string
   email?: string
 }
+
+export interface MusicCategory {
+  id: number
+  name: string
+  parent: number
+  children: any[]
+}
