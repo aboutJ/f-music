@@ -18,6 +18,7 @@ declare module '@vue/runtime-core' {
     SelectBtn: typeof import('./src/components/SelectBtn/index.vue')['default']
     Selecter: typeof import('./src/components/Selecter/index.vue')['default']
     SelectItem: typeof import('./src/components/SelectItem/index.vue')['default']
+    SelectTag: typeof import('./src/components/SelectTag/index.vue')['default']
     User: typeof import('./src/components/User/index.vue')['default']
   }
   export interface ComponentCustomProperties {

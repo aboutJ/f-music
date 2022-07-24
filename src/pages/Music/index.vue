@@ -1,9 +1,11 @@
 <template>
   <Selecter :data="categoryList"/>
+  <SelectTag />
 </template>
 
 <script lang="ts" setup>
 import Selecter from '../../components/Selecter/index.vue'
+import SelectTag from '../../components/SelectTag/index.vue'
 import { getMusicCategory } from '../../api/music'
 import { onMounted, ref, Ref } from 'vue';
 import { MusicCategory } from '../../interface/info'

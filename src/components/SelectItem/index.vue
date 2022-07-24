@@ -1,10 +1,10 @@
 <template>
-  <div class="sl-wrapper" v-for="item in data" ref="selecter">
-    <div class="sl-main">
+  <div class="sl-wrapper" v-for="(item, index) in data">
+    <div class="sl-main" @mouseover="activeIndex = index" @mouseout="activeIndex = -1">
       <span>{{item.name}}</span>
       <i class="arrow iconfont icon-caret-down"></i>
-      <div class="select-dialog">
-        <div class="sd-arrow" ref="sdArrow"></div>
+      <div class="select-dialog" v-show="index == activeIndex">
+        <div class="sd-arrow"></div>
         <div class="main">
           <SelectBtn :content="item.children"/>
         </div>
@@ -23,9 +23,8 @@ import { useMusicStore } from '../../store'
 
 defineProps(["data"])
 
-const selecter = ref<HTMLDivElement | null>(null)
-const sdArrow = ref<HTMLDivElement | null>(null)
 let canClick = ref<boolean>(false)
+let activeIndex = ref<number>(-1)
 
 const musicStore = useMusicStore()
 
@@ -34,13 +33,16 @@ musicStore.$subscribe((mutation, state) => {
     canClick.value = true
   }else {
     canClick.value = false
+    musicStore.canShowCgList = false
   }
 })
 
 function search() {
   if(!canClick.value) return
   // 搜索
-  console.log('search');
+  musicStore.canShowCgList = true
+  musicStore.categorys = [...musicStore.categoryList]
+  activeIndex.value = -1
 }
 </script>
 
@@ -76,7 +78,8 @@ function search() {
     }
 
     .select-dialog {
-      display: none;
+      display: flex;
+      flex-direction: column;
       position: absolute;
       left: 0;
       top: 55px;
@@ -135,11 +138,6 @@ function search() {
     .arrow {
       transform: rotate(180deg);
       animation: rotate180 0.2s linear;
-    }
-
-    .select-dialog {
-      display: flex;
-      flex-direction: column;
     }
   }
 }

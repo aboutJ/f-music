@@ -15,25 +15,22 @@
 <script lang="ts" setup>
 import { MusicCategory } from '../../interface/info'
 import { useMusicStore } from '../../store/Music'
-import { Ref, ref } from 'vue'
+import { Ref, ref, computed } from 'vue'
 
 defineProps(["content"])
 const musicStore = useMusicStore()
-const checkedList: Ref<MusicCategory[]> = ref([])
 
 // 状态是否被选中
 function getCheckedStatus(item: MusicCategory): boolean {
-  return checkedList.value.findIndex((ele) => ele == item) != -1
+  return musicStore.categoryList.findIndex((ele) => ele == item) != -1
 }
 
 function current(item: MusicCategory) {
-  const result = checkedList.value.findIndex((ele) => item == ele)
+  const result = musicStore.categoryList.findIndex((ele) => item == ele)
   if(result != -1) {
-    checkedList.value.splice(result, 1)
     musicStore.categoryList.splice(result, 1)
     return
   }
-  checkedList.value.push(item)
   musicStore.categoryList.push(item)
 }
 </script>
