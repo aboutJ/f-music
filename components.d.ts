@@ -13,12 +13,14 @@ declare module '@vue/runtime-core' {
     ElInput: typeof import('element-plus/es')['ElInput']
     Header: typeof import('./src/components/Header/index.vue')['default']
     Login: typeof import('./src/components/Login/index.vue')['default']
+    MusicTag: typeof import('./src/components/MusicTag/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SelectBtn: typeof import('./src/components/SelectBtn/index.vue')['default']
     Selecter: typeof import('./src/components/Selecter/index.vue')['default']
     SelectItem: typeof import('./src/components/SelectItem/index.vue')['default']
     SelectTag: typeof import('./src/components/SelectTag/index.vue')['default']
+    TypeTag: typeof import('./src/components/TypeTag/index.vue')['default']
     User: typeof import('./src/components/User/index.vue')['default']
   }
   export interface ComponentCustomProperties {

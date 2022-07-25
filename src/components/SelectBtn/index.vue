@@ -15,7 +15,6 @@
 <script lang="ts" setup>
 import { MusicCategory } from '../../interface/info'
 import { useMusicStore } from '../../store/Music'
-import { Ref, ref, computed } from 'vue'
 
 defineProps(["content"])
 const musicStore = useMusicStore()

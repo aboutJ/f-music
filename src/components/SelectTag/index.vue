@@ -33,7 +33,6 @@ const clearSomeTag = (item: MusicCategory) => {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  margin: 24px 0;
 
   .tag-wrapper {
     display: flex;
